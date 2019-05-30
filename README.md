@@ -2,7 +2,7 @@
 
 Created with love by: `Philip Nguyen`
 
-View online at: `Your URL here`
+View online at: `https://github.com/Nguyephi/movie-app`
 
 Basic movie app using react.
 
