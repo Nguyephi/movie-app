@@ -4,7 +4,10 @@ import './App.css';
 import moment from 'moment';
 import { css } from '@emotion/core';
 import { BeatLoader } from 'react-spinners';
-import InputRange from 'react-input-range'
+import InputRange from 'react-input-range';
+import Modal from 'react-modal';
+import YouTube from '@u-wave/react-youtube';
+
 
 const defaultImg = require('./NoPoster.jpg')
 const navbarLogo = require('./navbarLogo.png')
@@ -14,8 +17,6 @@ const override = css`
     margin: 0 auto;
     border-color: red;
 `;
-
-
 class App extends React.Component {
   constructor(props) {
     super(props) 
@@ -28,7 +29,8 @@ class App extends React.Component {
       isSearched: false,
       // hasSortingType: false,
       isLoading: true,
-
+      showModal: false,
+      id: null
     }
   }
 
@@ -91,10 +93,10 @@ class App extends React.Component {
   }
 
   renderMovies() {
-    return this.state.movies.map(({popularity, backdrop_path, overview, release_date, title, vote_average}) => {
+    return this.state.movies.map(({popularity, backdrop_path, overview, release_date, title, vote_average, showModal, id}) => {
       return (
           <Card style={{ width: '21rem', paddingBottom: '1em', margin: '1em' }}>
-            <Card.Img variant="top" src={this.getMoviePosterUrl(backdrop_path)} />
+            <Card.Img  onClick={()=>this.getMoviesSelectedId(id)} variant="top" src={this.getMoviePosterUrl(backdrop_path)} />
             <Card.Body>
               <Card.Title style={{ fontSize: '1.5em', fontWeight: 'bold', minHeight: '2.5em' }}>{title}</Card.Title>
               <Card.Text style={{ height: '15em', overflowY: 'scroll' }}>{overview}</Card.Text>
@@ -102,14 +104,29 @@ class App extends React.Component {
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Released: {moment(release_date).fromNow()}</ListGroup.Item>
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Rated: {vote_average}/10</ListGroup.Item>
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Popularity: {popularity}</ListGroup.Item>
+                  <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}> <Button  onClick={()=>this.getMoviesSelectedId(id)}> Open Trailer </Button></ListGroup.Item>
                   <Button variant="info">More Info</Button>
                 </ListGroup>
             </Card.Body>
+           
+
           </Card>
+          
       )
     })
   }
-  
+  getMoviesSelectedId =  async (id)  =>{
+    if(id){
+    const { movies, pageNumber, selectedView } = this.state
+      const api = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=e1de7d4285d6f1a62ca2b7495036b28d `
+        let data = await fetch(api)
+        let response = await data.json()
+    this.setState({
+      showModal: true,
+      key: response.results[0].key,
+    })
+    }
+  }
   searchInput = (e) => {
     this.setState({search: e.target.value})
   }
@@ -165,11 +182,12 @@ class App extends React.Component {
         return movie
     })
     this.setState({ movies: results })
-    console.log('moviesyear', this.movie.release_date)
+   
   }
-
+  
   render() {
     if(this.state.isLoading) {
+
     return (
       <div style={{ margin: '10em', display: 'flex' }} className='sweet-loading'>
         <BeatLoader
@@ -182,8 +200,11 @@ class App extends React.Component {
       </div> 
     )
   }
+  console.log('hahahah',this.state)
     return (
+      
       <div>
+         
           {this.navbar()}
         <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 60, flexDirection: 'column',
     alignItems: 'center' }}>
@@ -201,8 +222,35 @@ class App extends React.Component {
         {this.renderMovies()}
       </div>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '1.5em 0' }}>
-          {this.moreMoviesButton(() => {console.log(this.state)})}
+          {this.moreMoviesButton(() => {console.log('this.state.',this.state)})}
         </div>
+        <Modal 
+          isOpen={this.state.showModal}
+          onRequestClose={()=>this.setState({showModal: false})}
+          style={{
+            overlay: {
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'blue'
+            },
+            content: {
+              backgroundColor: 'grey'
+            }
+          }}
+          >  
+                <YouTube
+                video= {this.state.key}
+                width = '100%'
+                height='90%'
+                background= 'black'
+                autoplay 
+              />
+             <Button onClick={()=>this.setState({showModal: false})}> Hide Trailer </Button>  
+          </Modal>
+             
       </div>
   );
 }
