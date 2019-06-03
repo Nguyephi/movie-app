@@ -110,7 +110,7 @@ class App extends React.Component {
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Released: {moment(release_date).fromNow()}</ListGroup.Item>
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Rated: {vote_average}/10</ListGroup.Item>
                   <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}>Popularity: {popularity}</ListGroup.Item>
-                  <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}> <button  onClick={()=>this.getMoviesSelectedId(id)}> Open Trailer </button></ListGroup.Item>
+                  <ListGroup.Item style={{ paddingBottom: '.5em', fontWeight: '600' }}> <Button  onClick={()=>this.getMoviesSelectedId(id)}> Open Trailer </Button></ListGroup.Item>
                   <Button variant="info">More Info</Button>
                 </ListGroup>
             </Card.Body>
@@ -122,7 +122,7 @@ class App extends React.Component {
     })
   }
   getMoviesSelectedId =  async (id)  =>{
-    
+    if(id){
     const { movies, pageNumber, selectedView } = this.state
       const api = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=e1de7d4285d6f1a62ca2b7495036b28d `
         let data = await fetch(api)
@@ -132,7 +132,7 @@ class App extends React.Component {
       key: response.results[0].key,
     })
     }
-  
+  }
   searchInput = (e) => {
     this.setState({search: e.target.value})
   }
@@ -243,18 +243,6 @@ class App extends React.Component {
               backgroundColor: 'blue'
             },
             content: {
-              position: 'absolute',
-              top: '40px',
-              left: '40px',
-              right: '40px',
-              bottom: '40px',
-              border: '1px solid #ccc',
-              background: '#fff',
-              overflow: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '4px',
-              outline: 'none',
-              padding: '20px',
               backgroundColor: 'grey'
             }
           }}
@@ -262,13 +250,13 @@ class App extends React.Component {
                 <YouTube
                 video= {this.state.key}
                 width = '100%'
-                height='100%'
+                height='90%'
                 background= 'black'
                 autoplay 
               />
-
+             <Button onClick={()=>this.setState({showModal: false})}> Hide Trailer </Button>  
           </Modal>
-              <button onClick={()=>this.setState({showModal: false})}> Hide Trailer </button>
+             
       </div>
   
 
