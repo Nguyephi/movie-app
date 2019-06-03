@@ -17,8 +17,6 @@ const override = css`
     margin: 0 auto;
     border-color: red;
 `;
-
-
 class App extends React.Component {
   constructor(props) {
     super(props) 
@@ -33,10 +31,7 @@ class App extends React.Component {
       isLoading: true,
       showModal: false,
       id: null
-
     }
-
-  
   }
 
   componentDidMount(){
@@ -258,10 +253,6 @@ class App extends React.Component {
           </Modal>
              
       </div>
-  
-
-
-
   );
 }
 }
