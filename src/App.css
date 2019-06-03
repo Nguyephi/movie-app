@@ -1,3 +1,22 @@
+a {
+  color: #7d7d7d;
+}
+
+a:hover {
+  color: #01b3bf;
+}
+
+.noMargin {margin: 0}
+
+@media screen and (max-width: 767px) {
+.toggleVisible {display: none;}
+.toggleBreakLine {width: 20em; margin-left: 3em}
+}
+
+@media screen and (min-width: 768px) {
+  .toggleBreakLine {margin-left: .55em;}
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -33,4 +52,32 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+ body {
+   background-image: url(./movieBackground.jpg);
+   background-size: cover;                      
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-attachment: fixed;
+ }
+
+ @media screen and (max-width: 767px) and (min-width: 576px) {
+   Form {
+    display: flex; 
+    padding-top: .5em;
+    flex-direction: row-reverse !important;
+    float: left;
+  }
+ }
+
+ @media screen and (max-width: 575px) {
+  Form {
+  flex-flow: row-reverse !important; 
+  padding-top: .5em; 
+ }
+}
+
+ @media screen and (max-width: 767px) {
+  .mr-sm-2 {margin-left: .5em;}
 }
