@@ -49,7 +49,6 @@ class App extends React.Component {
       pageNumber: pageNumber + 1,
       movies: filterSearchResults,
       isLoading: false,
-      
     })
     console.log('search', this.moresearches)
   }
