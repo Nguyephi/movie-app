@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@u-wave/react-youtube": "^0.6.0",
     "bootstrap": "^4.3.1",
     "moment": "^2.24.0",
     "nw-react-slider": "^2.0.1",
